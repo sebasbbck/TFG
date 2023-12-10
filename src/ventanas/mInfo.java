@@ -9,8 +9,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,6 +29,7 @@ public class mInfo extends javax.swing.JDialog {
     private String mat;
     private boolean admin;
     private JLabel imagenPanel;
+    private int idComp;
     
     public mInfo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -31,12 +37,13 @@ public class mInfo extends javax.swing.JDialog {
         this.setTitle("Más Información");
         this.setLocationRelativeTo(null);
     }
-    public mInfo(String r, boolean a){
+    public mInfo(String r, boolean a, int id){
         this.setTitle("Más Información");
         this.setLocationRelativeTo(null);
         
         this.mat=r; 
         this.admin=a;
+        this.idComp=id;
         initComponents();
         this.setLocationRelativeTo(null);
         matricula.setVisible(false);
@@ -181,6 +188,7 @@ public class mInfo extends javax.swing.JDialog {
         jLabel17 = new javax.swing.JLabel();
         matricula = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         bastidor = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -316,7 +324,7 @@ public class mInfo extends javax.swing.JDialog {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 340, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 340, -1, -1));
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
@@ -331,6 +339,14 @@ public class mInfo extends javax.swing.JDialog {
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("Nº bastidor:");
         getContentPane().add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 260, -1, -1));
+
+        jButton2.setText("Comprar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 340, -1, -1));
 
         bastidor.setEditable(false);
         bastidor.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -356,6 +372,55 @@ public class mInfo extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        String bast=bastidor.getText();
+        comprar(bast);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    
+    public void comprar(String bast){
+        String usu="SA";
+        String bd="jdbc:hsqldb:hsql://localhost/";
+        String contra="";
+        try (Connection connection = DriverManager.getConnection(bd, usu, contra)) {
+
+            // Actualizar estado del coche a 'No Disponible'
+            String updateEstadoQuery = "UPDATE coche SET estado = 'No Disponible' WHERE n_bastidor = ?";
+            try (PreparedStatement updateEstadoStatement = connection.prepareStatement(updateEstadoQuery)) {
+                updateEstadoStatement.setString(1, bast);
+                int rowsUpdated = updateEstadoStatement.executeUpdate();
+                if (rowsUpdated > 0) {
+                    System.out.println("Estado del coche actualizado correctamente");
+                } else {
+                    System.out.println("No se pudo actualizar el estado del coche");
+                    return; // No continuar con la inserción en coches_comprados
+                }
+            }
+
+            // Insertar información de la compra en la tabla coches_comprados
+            String insertCompraQuery = "INSERT INTO coches_comprados (bastidor, id_usuario, fecha_compra) VALUES (?, ?, ?)";
+            try (PreparedStatement insertCompraStatement = connection.prepareStatement(insertCompraQuery)) {
+                insertCompraStatement.setString(1, bast);
+                insertCompraStatement.setInt(2, idComp);
+
+                // Obtener la fecha actual en formato 'yyyy-MM-dd'
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaCompra = dateFormat.format(new Date());
+                insertCompraStatement.setString(3, fechaCompra);
+
+                int rowsInserted = insertCompraStatement.executeUpdate();
+                if (rowsInserted > 0) {
+                    JOptionPane.showMessageDialog(null, "Compra realizada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al realizar la compra", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -405,6 +470,7 @@ public class mInfo extends javax.swing.JDialog {
     private javax.swing.JTextField color;
     private javax.swing.JTextField f_fab;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

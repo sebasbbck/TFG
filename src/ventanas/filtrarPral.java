@@ -83,41 +83,30 @@ public class filtrarPral extends javax.swing.JFrame {
         
         jComboBox1.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if(jCheckBoxMenuItem1.isSelected()){
-                    filtrarAdmin();
-                }
-                else{
+            public void actionPerformed(ActionEvent e) {             
                    filtrar();
-                }
-                
             }
         });
 
         jComboBox2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(jCheckBoxMenuItem1.isSelected()){
-                    filtrarAdmin();
-                }
-                else{
+                
                    filtrar();
-                }
+                
             }
         });
 
         jComboBox3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(jCheckBoxMenuItem1.isSelected()){
-                    filtrarAdmin();
-                }
-                else{
+                
                    filtrar();
-                }
+                
             }
         });
         jMenuBar1.setVisible(false);
+        jCheckBoxMenuItem1.setSelected(false);
 
     }
     public filtrarPral(boolean f, int i){
@@ -146,7 +135,7 @@ public class filtrarPral extends javax.swing.JFrame {
                 
             }
         jComboBox2.setEnabled(false);
-        System.out.println("Iniciando desde constructor normal");
+        System.out.println("Iniciando desde constructor raro");
         
         SpinnerNumberModel spinnerModel1 = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 500);
         SpinnerNumberModel spinnerModel2 = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 500);
@@ -213,8 +202,7 @@ public class filtrarPral extends javax.swing.JFrame {
     public void keyReleased(KeyEvent e) {
     }
 }
-
-    
+   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -246,6 +234,7 @@ public class filtrarPral extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -367,7 +356,7 @@ public class filtrarPral extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 90, -1, -1));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ventanas/fondos/gris.png"))); // NOI18N
         getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 600));
@@ -411,6 +400,14 @@ public class filtrarPral extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem3);
 
+        jMenuItem4.setText("Usuarios");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -444,10 +441,10 @@ public class filtrarPral extends javax.swing.JFrame {
             if(jTable1.getSelectedColumn()==11){
             String t=jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
             if(jCheckBoxMenuItem1.isSelected()){
-                mInfo m=new mInfo(t,true);
+                mInfo m=new mInfo(t,true,idAlm);
                 m.setVisible(true);
             }else{
-               mInfo m=new mInfo(t,false); 
+               mInfo m=new mInfo(t,false,idAlm); 
                m.setVisible(true);
             }      
             
@@ -456,11 +453,11 @@ public class filtrarPral extends javax.swing.JFrame {
             if(!jCheckBoxMenuItem1.isSelected()){
                 if(jTable1.getSelectedColumn()==9){
                 String t=jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();          
-               mInfo m=new mInfo(t,false); 
+               mInfo m=new mInfo(t,false,idAlm); 
                m.setVisible(true);
               
             }
-        }
+        }           
         
         if(jTable1.getSelectedColumn()==12){
             String t=jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
@@ -506,6 +503,7 @@ public class filtrarPral extends javax.swing.JFrame {
 
                     if (filasAfectadas > 0) {
                         tablaAdmin(); // Método para actualizar la tabla después de eliminar
+                        filtrarAdmin();
                     } 
                 }
             } catch (Exception e) {
@@ -531,7 +529,7 @@ public class filtrarPral extends javax.swing.JFrame {
             try {
                 InputStream vinculararchivo = null;
                 vinculararchivo = getClass().getResourceAsStream("/informes/informe3.jrxml");
-                //String ruta_imagen = "informes/coffe.jpg";
+                String ruta_imagen = "informes/logo2.png";
                 JasperReport jr = null;
 
                 Map<String, Object> mapa = new HashMap<>();
@@ -543,9 +541,10 @@ public class filtrarPral extends javax.swing.JFrame {
                     mapa.put("filtro", fil);
                 }
                 
+                
                 System.out.println("where "+mapa.toString());  
                 System.out.println("final "+mapa.toString());
-                //mapa.put("icon", ruta_imagen);
+                mapa.put("img", ruta_imagen);
                 jr = JasperCompileManager.compileReport(vinculararchivo);
                 JasperPrint jasperPrint = JasperFillManager.fillReport(jr, mapa, c);
                 JasperViewer visor = new JasperViewer(jasperPrint, false);
@@ -580,6 +579,11 @@ public class filtrarPral extends javax.swing.JFrame {
 
     private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
         // TODO add your handling code here:
+        jComboBox1.setSelectedIndex(0);
+        jComboBox2.setSelectedIndex(0);
+        jComboBox3.setSelectedIndex(0);
+        jSpinner1.setValue(0);
+        jSpinner2.setValue(0);
         if(jCheckBoxMenuItem1.isSelected()){
             tablaAdmin();
             jMenu2.setVisible(true);
@@ -619,14 +623,20 @@ public class filtrarPral extends javax.swing.JFrame {
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
             
             try {
-                addModelos m=new addModelos(idAlm,null);
+                addModelos m=new addModelos();
                 m.setVisible(rootPaneCheckingEnabled);
                 this.dispose();
             } catch (SQLException ex) {
                 Logger.getLogger(filtrarPral.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
+            }            
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        usuarios u=new usuarios(idAlm);
+        u.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     public Connection conectar(){
         String usu="SA";
@@ -728,7 +738,7 @@ public class filtrarPral extends javax.swing.JFrame {
         
                 Statement leer= c.createStatement();
                 ResultSet resul=leer.executeQuery("SELECT matricula, marca, modelo, fecha_fab, motor, potencia, n_plazas, cambio, precio "
-                        + " FROM coche ");
+                        + " FROM coche WHERE estado='Disponible'");
                 /*ResultSet resul=leer.executeQuery("SELECT marca "+"FROM marcas");*/
             
                 while(resul.next())
@@ -964,10 +974,10 @@ public class filtrarPral extends javax.swing.JFrame {
 
         // Construimos la consulta SQL
         String consultaSQL = "SELECT matricula, marca, modelo, fecha_fab, motor, potencia, n_plazas, cambio, precio, id_usuario, n_bastidor, n_puertas, id_color, cilindrada "
-                + " FROM coche" + (clausula.isEmpty() ? "" : " WHERE " + clausula);
+                + " FROM coche" + " WHERE estado='Disponible' "+(clausula.isEmpty() ? "" : " AND " + clausula);
         
         fil= (clausula.isEmpty() ? "" : " WHERE " + clausula);
-        System.out.print(fil);
+        System.out.println(fil);
       
         Object[] datos = new Object[10];
 
@@ -1425,6 +1435,7 @@ public class filtrarPral extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JSpinner jSpinner2;

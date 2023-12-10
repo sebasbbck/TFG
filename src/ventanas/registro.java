@@ -20,10 +20,18 @@ public class registro extends javax.swing.JFrame {
     /**
      * Creates new form registro
      */
+    private boolean h;
     public registro() {
         initComponents();
         this.setTitle("Registro de usuarios");
         this.setLocationRelativeTo(null);
+        h=false;
+    }
+    public registro(boolean j) {
+        initComponents();
+        this.setTitle("Registro de usuarios");
+        this.setLocationRelativeTo(null);
+        h=j;
     }
     public void registrar() {
     String nombre = nom.getText();
@@ -47,7 +55,10 @@ public class registro extends javax.swing.JFrame {
     if(nuevaContrasena.isBlank()){
         JOptionPane.showMessageDialog(this, "Introduzca una contraseña, es obligatorio");
     }
-    if(!nombre.isBlank()&&!apellido1.isBlank()&&!apellido2.isBlank()&&!nuevoUsuario.isBlank()&&!nuevaContrasena.isBlank()){
+    if(correo.getText().isBlank()){
+        JOptionPane.showMessageDialog(this, "Introduzca un correo, es obligatorio");
+    }
+    if(!nombre.isBlank()&&!apellido1.isBlank()&&!apellido2.isBlank()&&!nuevoUsuario.isBlank()&&!nuevaContrasena.isBlank()&&!correo.getText().isBlank()){
         if (esAdministrador) {
         // Abre el JDialog de administrador para ingresar las credenciales
         comp_admin adDia = new comp_admin(this, true);
@@ -57,7 +68,11 @@ public class registro extends javax.swing.JFrame {
             // Continúa con el registro como administrador
             if (existeUsuario(nuevoUsuario)) {
                 JOptionPane.showMessageDialog(this, "El nombre de usuario ya existe. Elija otro nombre de usuario.");
-            } else {
+            }
+            if(existeCorreo(correo.getText())){
+                JOptionPane.showMessageDialog(this, "El correo ya está asignado a una cuenta. Elija otro correo.");
+            }
+                if(!existeUsuario(nuevoUsuario)&&!existeCorreo(correo.getText())) {
                 Connection conn = null;
                 PreparedStatement userPreparedStatement = null;
 
@@ -68,7 +83,7 @@ public class registro extends javax.swing.JFrame {
                     conn = DriverManager.getConnection(url, user, pass);
 
                     // Insertar el nuevo usuario en la tabla "usuarios"
-                    String sqlUser = "INSERT INTO usuarios (nombre, apellido1, apellido2, n_usuario, contra, administrador) VALUES (?, ?, ?, ?, ?, ?)";
+                    String sqlUser = "INSERT INTO usuarios (nombre, apellido1, apellido2, n_usuario, contra, administrador, correo) VALUES (?, ?, ?, ?, ?, ?, ?)";
                     userPreparedStatement = conn.prepareStatement(sqlUser);
                     userPreparedStatement.setString(1, nombre);
                     userPreparedStatement.setString(2, apellido1);
@@ -76,6 +91,7 @@ public class registro extends javax.swing.JFrame {
                     userPreparedStatement.setString(4, nuevoUsuario);
                     userPreparedStatement.setString(5, nuevaContrasena);
                     userPreparedStatement.setBoolean(6, esAdministrador);
+                    userPreparedStatement.setString(7, correo.getText());
                     userPreparedStatement.executeUpdate();
                     JOptionPane.showMessageDialog(this, "Usuario registrado con éxito");
                     
@@ -146,6 +162,7 @@ public class registro extends javax.swing.JFrame {
                     n_us.setText(null);
                     cont.setText(null);
                     admin.setSelected(false);
+                    correo.setText(null);
 }
 
 private boolean existeUsuario(String nombreUsuario) {
@@ -187,6 +204,45 @@ private boolean existeUsuario(String nombreUsuario) {
 
     return usuarioExiste;
 }
+private boolean existeCorreo(String nombreUsuario) {
+    // Verificar si el nombre de usuario ya existe en la base de datos
+    boolean correoExiste = false;
+    Connection conn = null;
+    PreparedStatement userPreparedStatement = null;
+    ResultSet resultSet = null;
+
+    try {
+        String url = "jdbc:hsqldb:hsql://localhost/";
+        String user = "SA";
+        String pass = "";
+        conn = DriverManager.getConnection(url, user, pass);
+
+        String sql = "SELECT correo FROM usuarios WHERE n_usuario = ?";
+        userPreparedStatement = conn.prepareStatement(sql);
+        userPreparedStatement.setString(1, nombreUsuario);
+        resultSet = userPreparedStatement.executeQuery();
+
+        correoExiste = resultSet.next();
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (userPreparedStatement != null) {
+                userPreparedStatement.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    return correoExiste;
+}
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -205,6 +261,8 @@ private boolean existeUsuario(String nombreUsuario) {
         cont = new javax.swing.JPasswordField();
         jButton2 = new javax.swing.JButton();
         admin = new javax.swing.JCheckBox();
+        jLabel8 = new javax.swing.JLabel();
+        correo = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -261,6 +319,12 @@ private boolean existeUsuario(String nombreUsuario) {
         admin.setForeground(new java.awt.Color(255, 255, 255));
         admin.setText("Administrador");
         getContentPane().add(admin, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 180, -1, -1));
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Correo:");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 140, -1, -1));
+        getContentPane().add(correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 140, 150, -1));
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ventanas/fondos/boton.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -328,6 +392,7 @@ private boolean existeUsuario(String nombreUsuario) {
     private javax.swing.JTextField ap1;
     private javax.swing.JTextField ap2;
     private javax.swing.JPasswordField cont;
+    private javax.swing.JTextField correo;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
@@ -337,6 +402,7 @@ private boolean existeUsuario(String nombreUsuario) {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField n_us;
     private javax.swing.JTextField nom;
     // End of variables declaration//GEN-END:variables

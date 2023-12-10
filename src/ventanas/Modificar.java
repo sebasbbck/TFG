@@ -678,6 +678,13 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) {
         jTable1 = new javax.swing.JTable();
         jLabel19 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -857,6 +864,54 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) {
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ventanas/fondos/gris.png"))); // NOI18N
         getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1080, 590));
 
+        jMenu1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/home.png"))); // NOI18N
+        jMenu1.setText("Volver al inicio");
+        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu1MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Acciones");
+
+        jMenuItem1.setText("Agregar Coche");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
+        jMenuItem2.setText("Marcas");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
+        jMenuItem3.setText("Modelos");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem3);
+
+        jMenuItem4.setText("Usuarios");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -894,7 +949,7 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) {
         // TODO add your handling code here:
         if(jTable1.getSelectedColumn()==11){
             String t=jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();           
-                mInfo m=new mInfo(t,true);
+                mInfo m=new mInfo(t,true,idusu);
                 m.setVisible(true);              
             
         }
@@ -916,6 +971,49 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) {
             }
     }
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        // TODO add your handling code here:
+        filtrarPral f=new filtrarPral(true,idusu);
+        f.setVisible(true);
+        f.jCheckBoxMenuItem1.setSelected(true);
+        f.jMenu2.setVisible(true);
+        f.tablaAdmin();
+        this.dispose();
+    }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        add a=new add(idusu);
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        addMarcas am=new addMarcas(idusu);
+        am.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        try {
+            addModelos m=new addModelos();
+            m.setVisible(rootPaneCheckingEnabled);
+            this.dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(filtrarPral.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        usuarios u=new usuarios(idusu);
+        u.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
      
     public void eliminar(String numeroBastidor) {
     String usu = "SA";
@@ -1015,6 +1113,13 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu1;
+    public javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JComboBox<String> marca;

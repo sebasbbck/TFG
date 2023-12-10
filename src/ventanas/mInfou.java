@@ -1,0 +1,337 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package ventanas;
+
+import java.awt.Graphics;
+import java.awt.Image;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.Connection;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+
+/**
+ *
+ * @author sebas
+ */
+public class mInfou extends javax.swing.JFrame {
+
+    /**
+     * Creates new form mInfou
+     */
+    private int id;
+    private String ul;
+    public mInfou(int ida) {
+        initComponents();
+        id=ida;
+        this.setTitle("Información usuario ampliada");
+        this.setLocationRelativeTo(null);
+        escribir();
+        cargarImagen();
+    }
+    public void cargarImagen(){
+        String usu="SA";
+        String bd="jdbc:hsqldb:hsql://localhost/";
+        String contra="";
+        Connection c=null;
+        
+        
+        try{
+           
+           Class.forName("org.hsqldb.jdbc.JDBCDriver");
+           c= DriverManager.getConnection(bd,usu,contra); 
+           if(c!=null){
+               System.out.println("Conectau");
+           }
+           else{
+               System.out.println("fallo");
+           }
+                Statement leer2= c.createStatement();
+                ResultSet resul2=leer2.executeQuery("SELECT imagen FROM usuarios WHERE id_user="+id);
+      
+                if (resul2.next()) {
+                ul = resul2.getString(1);
+                System.out.println("url:" + ul);
+                if (ul != null) {
+                    ImageIcon imageIcon = new ImageIcon(ul);
+                    Image image = imageIcon.getImage();
+                    int width = imageIcon.getIconWidth();
+                    int height = imageIcon.getIconHeight();
+
+                    System.out.println("Ancho de la imagen: " + width);
+                    System.out.println("Altura de la imagen: " + height);
+
+                    Image newImage = image.getScaledInstance(180, 150, Image.SCALE_SMOOTH);
+    
+                    ImageIcon newImageIcon = new ImageIcon(newImage);
+
+                    img.setIcon(newImageIcon);
+                    jPanel1.updateUI();
+                    jPanel1.repaint();
+                    jPanel1.revalidate();
+                }
+                }
+        }
+                catch(ClassNotFoundException | SQLException e){
+                        e.printStackTrace();
+                        }
+        class FondoPanel extends JPanel{
+        private Image im;
+        
+        @Override
+        public void paint(Graphics g){
+        im=new ImageIcon(ul).getImage();
+        g.drawImage(im, 0, 0, getWidth(),getHeight(),this);
+        setOpaque(false);
+        super.paint(g);
+    }
+    }
+    }
+    
+    public void escribir(){
+        String usu = "SA";
+            String bd = "jdbc:hsqldb:hsql://localhost/";
+            String contra = "";
+            Connection c=null;
+        try{
+           Class.forName("org.hsqldb.jdbc.JDBCDriver");
+           c= DriverManager.getConnection(bd,usu,contra); 
+           if(c!=null){
+               System.out.println("Conectau");
+           }
+           else{
+               System.out.println("fallo");
+           }
+           
+           Object[] datos=new Object[14];
+                
+        
+                Statement leer= c.createStatement();
+                ResultSet resul=leer.executeQuery("SELECT id_user, nombre, apellido1, apellido2, n_usuario, correo "
+                        + " FROM usuarios WHERE id_user="+id);
+                /*ResultSet resul=leer.executeQuery("SELECT marca "+"FROM marcas");*/
+            
+                while(resul.next())
+                {
+                    datos[0]=resul.getInt(1);
+                    idL.setText(datos[0].toString());
+                    datos[1]=resul.getString(2);
+                    nombreL.setText(datos[1].toString());
+                    datos[2]=resul.getString(3);
+                    papL.setText(datos[2].toString());
+                    datos[3]=resul.getString(4);
+                    sapL.setText(datos[3].toString());
+                    datos[4]=resul.getString(5);
+                    usuarioL.setText(datos[4].toString());
+                    datos[5]=resul.getString(6);
+                    correoL.setText(datos[5].toString());
+                    
+                }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(usuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel2 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        idL = new javax.swing.JLabel();
+        nombreL = new javax.swing.JLabel();
+        papL = new javax.swing.JLabel();
+        sapL = new javax.swing.JLabel();
+        correoL = new javax.swing.JLabel();
+        usuarioL = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        img = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel2.setText("Información ampliada");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, -1, -1));
+
+        jPanel2.setBackground(new java.awt.Color(153, 204, 255));
+        jPanel2.setLayout(new java.awt.GridLayout(6, 1, 20, 0));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("ID:");
+        jPanel2.add(jLabel1);
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setText("Nombre:");
+        jPanel2.add(jLabel3);
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel4.setText("Primer apellido:");
+        jPanel2.add(jLabel4);
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setText("Segundo apellido:");
+        jPanel2.add(jLabel7);
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setText("Correo:");
+        jPanel2.add(jLabel5);
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel6.setText("Nombre de usuario:");
+        jPanel2.add(jLabel6);
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 130, 250));
+
+        jPanel3.setBackground(new java.awt.Color(255, 204, 204));
+        jPanel3.setLayout(new java.awt.GridLayout(6, 1, 20, 0));
+
+        idL.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        idL.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        idL.setText("ID:");
+        jPanel3.add(idL);
+
+        nombreL.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        nombreL.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        nombreL.setText("Nombre:");
+        jPanel3.add(nombreL);
+
+        papL.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        papL.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        papL.setText("Primer apellido:");
+        jPanel3.add(papL);
+
+        sapL.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        sapL.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        sapL.setText("Segundo apellido:");
+        jPanel3.add(sapL);
+
+        correoL.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        correoL.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        correoL.setText("Correo:");
+        jPanel3.add(correoL);
+
+        usuarioL.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        usuarioL.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        usuarioL.setText("Nombre de usuario:");
+        jPanel3.add(usuarioL);
+
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 180, 250));
+
+        jPanel1.setLayout(new java.awt.GridLayout());
+        jPanel1.add(img);
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 100, 180, 170));
+
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel15.setText("Imagen de Perfil");
+        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 80, -1, -1));
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/volver.png"))); // NOI18N
+        jButton1.setText("Volver");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 320, -1, -1));
+
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crema.jpg"))); // NOI18N
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 360));
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        usuarios u=new usuarios(id);
+        u.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(mInfou.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(mInfou.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(mInfou.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(mInfou.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new mInfou(id).setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel correoL;
+    private javax.swing.JLabel idL;
+    private javax.swing.JLabel img;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel nombreL;
+    private javax.swing.JLabel papL;
+    private javax.swing.JLabel sapL;
+    private javax.swing.JLabel usuarioL;
+    // End of variables declaration//GEN-END:variables
+}

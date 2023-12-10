@@ -477,7 +477,6 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) throws
         jLabel14 = new javax.swing.JLabel();
         precio = new javax.swing.JSpinner();
         jLabel15 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
         matricula = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
@@ -503,6 +502,7 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) throws
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -593,15 +593,6 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) throws
         jLabel15.setText("CV");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 130, -1, 20));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/volver.png"))); // NOI18N
-        jButton1.setText("Volver");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 240, -1, -1));
-
         jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Matrícula:");
@@ -618,14 +609,14 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) throws
         bastidor.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         getContentPane().add(bastidor, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 130, 140, -1));
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mod.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/apply.png"))); // NOI18N
         jButton2.setText("Añadir");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 240, -1, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 230, 180, 40));
 
         color.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
         color.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -721,6 +712,11 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) throws
         jMenu2.add(jMenuItem1);
 
         jMenuItem2.setText("Marcas");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem2);
 
         jMenuItem3.setText("Modelos");
@@ -731,22 +727,20 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) throws
         });
         jMenu2.add(jMenuItem3);
 
+        jMenuItem4.setText("Usuarios");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        /*filtrarPral fil=new filtrarPral(true);
-        fil.setVisible(true);
-        fil.tablaAdmin();
-        fil.jCheckBoxMenuItem1.setSelected(true);
-        fil.jMenu2.setVisible(true);
-        this.dispose();*/
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -784,7 +778,7 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) throws
             if(jTable1.getSelectedColumn()==11){
             String t=jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
             
-                mInfo m=new mInfo(t,true);
+                mInfo m=new mInfo(t,true,idA);
                 m.setVisible(true);
             }   
             
@@ -852,7 +846,29 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) throws
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
+        try {
+                addModelos m=new addModelos();
+                m.setVisible(rootPaneCheckingEnabled);
+                this.dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(filtrarPral.class.getName()).log(Level.SEVERE, null, ex);
+            }     
+            
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        addMarcas am=new addMarcas(idA);
+        am.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        usuarios u=new usuarios(idA);
+        u.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
      
     
     public void agregar() {
@@ -874,7 +890,27 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) throws
         int p2 = (int) nPuertas.getValue();
         int p3 = (int) nPlazas.getValue();
         int p4 = (int) precio.getValue();
-
+        if(marca.getSelectedIndex()==0){
+                JOptionPane.showMessageDialog(this, "Debe seleccionar una marca");
+            }
+            if(modelo.getSelectedIndex()==0){
+                JOptionPane.showMessageDialog(this, "Debe seleccionar un modelo");
+            }
+            if(f_fab.getText().isBlank()){
+                JOptionPane.showMessageDialog(this, "Debe introducir una fecha");
+            }
+            if(motor.getSelectedIndex()==0){
+                JOptionPane.showMessageDialog(this, "Debe seleccionar un motor");
+            }
+            if(cilindrada.getText().isBlank()||matricula.getText().isBlank()||bastidor.getText().isBlank()){
+                JOptionPane.showMessageDialog(this, "Rellene todos los campos");
+            }
+            if(cambio.getSelectedIndex()==0){
+                JOptionPane.showMessageDialog(this, "Debe seleccionar un tipo de cambio");
+            }
+            if(color.getSelectedIndex()==0){
+                JOptionPane.showMessageDialog(this, "Debe seleccionar un color");
+            }
         if (!matricula.getText().isBlank() && !bastidor.getText().isBlank() && marca.getSelectedIndex() > 0
                 && modelo.getSelectedIndex() > 0 && color.getSelectedIndex() > 0 && motor.getSelectedIndex() > 0
                 && cambio.getSelectedIndex() > 0 && !f_fab.getText().isBlank() && !cilindrada.getText().isBlank()
@@ -929,7 +965,7 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) throws
             String sql2 = "INSERT INTO coche VALUES('" + matricula.getText() + "', '" + bastidor.getText() 
                      + "', '" + modelo.getSelectedItem().toString() + "', '"
                     + f_fab.getText() + "', '" +motor.getSelectedItem().toString()+"', '"+ colora + "', '" + cilindrada.getText() + "', " + pot + ", " + puert
-                    + ", " + plaz + ", '" + cambio.getSelectedItem().toString() + "', " + prec +", "+ idA+", '"+ marca.getSelectedItem().toString()+"')";
+                    + ", " + plaz + ", '" + cambio.getSelectedItem().toString() + "', " + prec +", "+ idA+", '"+ marca.getSelectedItem().toString()+"', 'Disponible"+"')";
 
             System.out.print(sql2);
 
@@ -937,13 +973,14 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) throws
 
             int resultado = s2.executeUpdate(sql2);
             System.out.println("SQL: " + sql2);
-
+            
+            
             if (resultado > 0) {
                 System.out.println("Registro actualizado correctamente");
                 JOptionPane.showMessageDialog(this, "Coche añadido exitosamente");
                 tablaAdmin();
             } else {
-                System.out.println("Error al actualizar el registro");
+                System.out.println("Error al actualizar el registro");               
             }
             
 
@@ -1034,7 +1071,6 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) throws
     private javax.swing.JTextField cilindrada;
     private javax.swing.JComboBox<String> color;
     private javax.swing.JTextField f_fab;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -1063,6 +1099,7 @@ private boolean existeBastidor(Connection conexion, String nuevoBastidor) throws
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JComboBox<String> marca;

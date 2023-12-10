@@ -14,6 +14,7 @@
 		</conditionalStyle>
 	</style>
 	<parameter name="filtro" class="java.lang.String"/>
+	<parameter name="img" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT *
 FROM COCHE
@@ -90,11 +91,14 @@ ORDER BY precio]]>
 		<property name="com.jaspersoft.studio.field.label" value="MARCA"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="COCHE"/>
 	</field>
+	<variable name="N_PUERTAS_SUM" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{N_PUERTAS}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="136" splitType="Stretch">
+		<band height="120" splitType="Stretch">
 			<staticText>
 				<reportElement style="Title" x="340" y="0" width="468" height="62" uuid="bc1ce1da-8232-46ea-be55-cec4abb986dd"/>
 				<textElement verticalAlignment="Middle"/>
@@ -107,6 +111,10 @@ ORDER BY precio]]>
 				</textElement>
 				<text><![CDATA[Informe generado por los filtros]]></text>
 			</staticText>
+			<image onErrorType="Blank">
+				<reportElement x="3" y="0" width="216" height="79" uuid="e54c9fab-f517-47f4-9112-74ea891b3e14"/>
+				<imageExpression><![CDATA[$P{img}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

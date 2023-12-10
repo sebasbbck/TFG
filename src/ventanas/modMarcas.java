@@ -8,17 +8,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -49,7 +47,7 @@ public class modMarcas extends javax.swing.JFrame {
     public modMarcas() {
         initComponents();
         tabla();
-        this.setTitle("Añadir nueva marca");
+        this.setTitle("Modificar marca");
         this.setLocationRelativeTo(null);
         String usu = "SA";
         String bd = "jdbc:hsqldb:hsql://localhost/";
@@ -73,7 +71,7 @@ public class modMarcas extends javax.swing.JFrame {
         tabla();
         this.mar=mar;
         id=is;
-        this.setTitle("Añadir nueva marca");
+        this.setTitle("Modificar marca");
         this.setLocationRelativeTo(null);
         String usu = "SA";
         String bd = "jdbc:hsqldb:hsql://localhost/";
@@ -334,6 +332,13 @@ private boolean existeMarca(Connection conexion, String marca) throws SQLExcepti
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -409,6 +414,54 @@ private boolean existeMarca(Connection conexion, String marca) throws SQLExcepti
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ventanas/fondos/blue2.png"))); // NOI18N
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, -1, -1));
 
+        jMenu1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/home.png"))); // NOI18N
+        jMenu1.setText("Volver al inicio");
+        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu1MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Acciones");
+
+        jMenuItem1.setText("Agregar Coche");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
+        jMenuItem2.setText("Marcas");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
+        jMenuItem3.setText("Modelos");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem3);
+
+        jMenuItem4.setText("Usuarios");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -468,7 +521,9 @@ private boolean existeMarca(Connection conexion, String marca) throws SQLExcepti
             }
         if(jTable1.getSelectedColumn()==1){
                 String t=jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();            
-                modMarcas mm=new modMarcas();
+                modMarcas mm=new modMarcas(t,id);
+                mm.setVisible(true);
+                this.dispose();
             }
         if(jTable1.getSelectedColumn()==2){
             
@@ -498,10 +553,55 @@ private boolean existeMarca(Connection conexion, String marca) throws SQLExcepti
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        filtrarPral f=new filtrarPral(true,id);
+        f.setVisible(true);
+        f.jCheckBoxMenuItem1.setSelected(true);
+        f.jMenu2.setVisible(true);
+        f.tablaAdmin();
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        // TODO add your handling code here:
+        filtrarPral f=new filtrarPral(true,id);
+        f.setVisible(true);
+        f.jCheckBoxMenuItem1.setSelected(true);
+        f.jMenu2.setVisible(true);
+        f.tablaAdmin();
+        this.dispose();
+    }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
         add a=new add(id);
         a.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        addMarcas am=new addMarcas(id);
+        am.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        try {
+            addModelos m=new addModelos();
+            m.setVisible(rootPaneCheckingEnabled);
+            this.dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(filtrarPral.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        usuarios u=new usuarios(id);
+        u.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
    public void eliminar(String marca) {
     String usu = "SA";
@@ -664,6 +764,13 @@ private void eliminarRegistros(String marca, Connection connection) {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JMenu jMenu1;
+    public javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
